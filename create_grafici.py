@@ -254,10 +254,43 @@ if 'NumOfProducts' in df.columns:
 
     plt.title("Anomalia dell'Offerta: Tasso di Churn per Numero di Prodotti Posseduti")
     plt.xlabel("Numero di Prodotti Attivi")
-    plt.ylabel("Tasso di Abbandono (%)")
+    plt.ylabel("Tasso di Churn (%)")
     plt.ylim(0, max(prod_churn.values) + 10)
     plt.tight_layout()
     plt.savefig(f'{OUTPUT_DIR}/6_churn_rate_prodotti.png', dpi=300)
     plt.close()
 
-print(f"\nTutti e 7 i grafici salvati correttamente in: {OUTPUT_DIR}/")
+# ==========================================
+# 7. NUOVO GRAFICO (8° TOTALE): COMPOSIZIONE FASCE ETÀ ALL'INTERNO DEL CHURN PER PRODOTTO
+# ==========================================
+if 'NumOfProducts' in df.columns and 'Fascia_Eta' in df.columns:
+    plt.figure(figsize=(10, 6))
+
+    # Filtriamo solo i clienti CHE HANNO ABBANDONATO (Exited == 1)
+    df_churn_only = df[df['Exited'] == 1]
+
+    # Calcoliamo la tabella a incrocio (cross-tab) normalizzata per colonna (prodotto)
+    ct = pd.crosstab(df_churn_only['Fascia_Eta'], df_churn_only['NumOfProducts'], normalize='columns') * 100
+
+    # Riordiniamo le fasce d'età in modo coerente
+    ct = ct.reindex(labels_age)
+
+    # Disegniamo il grafico a barre sovrapposte (stacked bar chart)
+    ax_stack = ct.T.plot(kind='bar', stacked=True, cmap='viridis', edgecolor='white', width=0.6, ax=plt.gca())
+
+    # Inseriamo i testi delle percentuali all'interno dei segmenti delle barre
+    for rects in ax_stack.containers:
+        labels = [f'{v:.1f}%' if v > 3 else '' for v in rects.datavalues]
+        ax_stack.bar_label(rects, labels=labels, label_type='center', fontweight='bold', color='white', fontsize=10)
+
+    plt.title("Composizione Demografica dei Clienti Persi (Churn) per Numero di Prodotti", fontsize=15)
+    plt.xlabel("Numero di Prodotti Posseduti (al momento del Churn)", fontsize=13)
+    plt.ylabel("Distribuzione Fasce d'Età (%)", fontsize=13)
+    plt.xticks(rotation=0)
+    plt.ylim(0, 105)
+    plt.legend(title="Fasce d'Età", bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.savefig(f'{OUTPUT_DIR}/7_composizione_eta_nel_churn_prodotti.png', dpi=300)
+    plt.close()
+
+print(f"\nTutti gli 8 grafici salvati correttamente in: {OUTPUT_DIR}/")
