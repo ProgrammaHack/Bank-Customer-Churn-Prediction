@@ -207,7 +207,7 @@ if 'Age' in X_test.columns and 'Balance' in X_test.columns:
     plt.close()
 
 # ==========================================
-# 5. NUOVO GRAFICO: CHURN RATE PER FASCE D'ETÀ (Feature 1: Age)
+# 5. GRAFICO: CHURN RATE PER FASCE D'ETÀ (Feature 1: Age)
 # ==========================================
 if 'Age' in df.columns:
     plt.figure(figsize=(9, 5))
@@ -236,7 +236,7 @@ if 'Age' in df.columns:
     plt.close()
 
 # ==========================================
-# 6. NUOVO GRAFICO: CHURN RATE PER NUMERO DI PRODOTTI (Feature 2: NumOfProducts)
+# 6. GRAFICO: CHURN RATE PER NUMERO DI PRODOTTI (Feature 2: NumOfProducts)
 # ==========================================
 if 'NumOfProducts' in df.columns:
     plt.figure(figsize=(8, 5))
@@ -261,7 +261,7 @@ if 'NumOfProducts' in df.columns:
     plt.close()
 
 # ==========================================
-# 7. NUOVO GRAFICO (8° TOTALE): COMPOSIZIONE FASCE ETÀ ALL'INTERNO DEL CHURN PER PRODOTTO
+# 7. GRAFICO: COMPOSIZIONE FASCE ETÀ ALL'INTERNO DEL CHURN PER PRODOTTO
 # ==========================================
 if 'NumOfProducts' in df.columns and 'Fascia_Eta' in df.columns:
     plt.figure(figsize=(10, 6))
